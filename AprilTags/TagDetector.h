@@ -18,7 +18,7 @@ public:
 
 	//! Constructor
   // note: TagFamily is instantiated here from TagCodes
-	TagDetector(const TagCodes& tagCodes) : thisTagFamily(tagCodes) {}
+	TagDetector(const TagCodes& tagCodes, const size_t blackBorder = 1) : thisTagFamily(tagCodes, blackBorder) {}
 	
 	std::vector<TagDetection> extractTags(const cv::Mat& image);
 	

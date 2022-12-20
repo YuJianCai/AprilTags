@@ -29,7 +29,7 @@ public:
 class TagFamily {
 public:
   //! The codes array is not copied internally and so must not be modified externally.
-  TagFamily(const TagCodes& tagCodes);
+  TagFamily(const TagCodes& tagCodes, const size_t blackBorder);
 
   void setErrorRecoveryBits(int b);
 
