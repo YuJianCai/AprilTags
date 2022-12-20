@@ -88,6 +88,11 @@ struct TagDetection {
 
   //! Draw the detection within the supplied image, including boarders and tag ID.
   void draw(cv::Mat& image) const;
+
+  //! Compare function to sort detections by std::sort
+  static bool sortByIdCompare(const TagDetection& a, const TagDetection& b) {
+    return (a.id < b.id);
+  }
 };
 
 } // namespace
