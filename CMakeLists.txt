@@ -7,7 +7,7 @@ include_directories(AprilTags . /opt/local/include)
 add_library(apriltags ${SOURCE_FILES})
 
 # require opencv dependence
-find_package(OpenCV)
+find_package(OpenCV 3.0 REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # require Eigen3
