@@ -1,11 +1,11 @@
 #ifndef TAGFAMILY_H
 #define TAGFAMILY_H
 
+#include <stdio.h>
 #include <climits>
 #include <cmath>
-#include <stdio.h>
-#include <vector>
 #include <map>
+#include <vector>
 
 #include "AprilTags/TagDetection.h"
 using namespace std;
@@ -13,22 +13,27 @@ using namespace std;
 namespace AprilTags {
 
 class TagCodes {
-public:
+ public:
   int bits;
   int minHammingDistance;
   std::vector<unsigned long long> codes;
-public:
- TagCodes(int bits, int minHammingDistance,
-          const unsigned long long* codesA, int num)
-   : bits(bits), minHammingDistance(minHammingDistance),
-    codes(codesA, codesA+num) // created vector for all entries of codesA
-      {}
+
+ public:
+  TagCodes(int bits,
+           int minHammingDistance,
+           const unsigned long long* codesA,
+           int num)
+      : bits(bits),
+        minHammingDistance(minHammingDistance),
+        codes(codesA, codesA + num)  // created vector for all entries of codesA
+  {}
 };
 
 //! Generic class for all tag encoding families
 class TagFamily {
-public:
-  //! The codes array is not copied internally and so must not be modified externally.
+ public:
+  //! The codes array is not copied internally and so must not be modified
+  //! externally.
   TagFamily(const TagCodes& tagCodes, const size_t blackBorder);
 
   void setErrorRecoveryBits(int b);
@@ -87,13 +92,13 @@ public:
   //! The array of the codes. The id for a code is its index.
   std::vector<unsigned long long> codes;
 
-  static const int  popCountTableShift = 12;
+  static const int popCountTableShift = 12;
   static const unsigned int popCountTableSize = 1 << popCountTableShift;
   static unsigned char popCountTable[popCountTableSize];
 
   //! Initializes the static popCountTable
   static class TableInitializer {
-  public:
+   public:
     TableInitializer() {
       for (unsigned int i = 0; i < TagFamily::popCountTableSize; i++)
         TagFamily::popCountTable[i] = TagFamily::popCountReal(i);
@@ -101,6 +106,6 @@ public:
   } initializer;
 };
 
-} // namespace
+}  // namespace AprilTags
 
 #endif

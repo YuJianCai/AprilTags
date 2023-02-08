@@ -5,57 +5,57 @@
  */
 
 #include <fcntl.h>
-#include <termios.h>
 #include <stdlib.h>
+#include <termios.h>
+#include <unistd.h>
 #include <iostream>
 #include <sstream>
-#include <unistd.h>
 
 #include "Serial.h"
 
 using namespace std;
 
-
 // open a serial port connection
 void Serial::open(const string& port, int rate) {
   m_serialPort = ::open(port.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
-  if (m_serialPort==-1) {
+  if (m_serialPort == -1) {
     cout << "Unable to open serial port" << endl;
     exit(1);
   }
-  fcntl(m_serialPort, F_SETFL,0); // O_NONBLOCK might be needed for write...
+  fcntl(m_serialPort, F_SETFL, 0);  // O_NONBLOCK might be needed for write...
 
-  struct termios port_settings;      // structure to store the port settings in
-  tcgetattr(m_serialPort, &port_settings); // get current settings
+  struct termios port_settings;  // structure to store the port settings in
+  tcgetattr(m_serialPort, &port_settings);  // get current settings
 
   speed_t b;
-  switch(rate) {
-  case(9600):
-    b = B9600;
-    break;
-  case(19200):
-    b = B19200;
-    break;
-  case(38400):
-    b = B38400;
-    break;
-  case(115200):
-    b = B115200;
-    break;
-  default:
-    cout << "Error: Unknown baud rate requested in Serial.open()" << endl;
-    exit(1);
+  switch (rate) {
+    case (9600):
+      b = B9600;
+      break;
+    case (19200):
+      b = B19200;
+      break;
+    case (38400):
+      b = B38400;
+      break;
+    case (115200):
+      b = B115200;
+      break;
+    default:
+      cout << "Error: Unknown baud rate requested in Serial.open()" << endl;
+      exit(1);
   }
 
-  cfsetispeed(&port_settings, b);    // set baud rates
+  cfsetispeed(&port_settings, b);  // set baud rates
   cfsetospeed(&port_settings, b);
 
-  port_settings.c_cflag &= ~PARENB;    // set no parity, stop bits, 8 data bits
+  port_settings.c_cflag &= ~PARENB;  // set no parity, stop bits, 8 data bits
   port_settings.c_cflag &= ~CSTOPB;
   port_settings.c_cflag &= ~CSIZE;
   port_settings.c_cflag |= CS8;
 
-  tcsetattr(m_serialPort, TCSANOW, &port_settings);    // apply the settings to the port
+  tcsetattr(
+      m_serialPort, TCSANOW, &port_settings);  // apply the settings to the port
 }
 
 // read a single character
@@ -75,7 +75,7 @@ string Serial::readBytesUntil(unsigned char until, int max_length) {
   int c;
   do {
     c = read();
-    if (c<0) { // wait for more characters
+    if (c < 0) {  // wait for more characters
       usleep(100);
     } else {
       result[n] = (unsigned char)c;

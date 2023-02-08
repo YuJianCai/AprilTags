@@ -8,13 +8,10 @@
 
 #include <string>
 
-
 class Serial {
+  int m_serialPort;  // file description for the serial port
 
-  int m_serialPort; // file description for the serial port
-  
-public:
-
+ public:
   Serial() : m_serialPort(-1) {}
 
   // open a serial port connection
@@ -37,5 +34,4 @@ public:
 
   // send a float
   void print(float num) const;
-
 };

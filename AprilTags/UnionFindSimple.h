@@ -13,12 +13,14 @@ class UnionFindSimple {
     int size;
   };
 
-public:
+ public:
   explicit UnionFindSimple(int maxId) : data(maxId) {
     init();
   };
-  
-  int getSetSize(int thisId) { return data[getRepresentative(thisId)].size; }
+
+  int getSetSize(int thisId) {
+    return data[getRepresentative(thisId)].size;
+  }
 
   int getRepresentative(int thisId);
 
@@ -30,12 +32,12 @@ public:
 
   void printDataVector() const;
 
-private:
+ private:
   void init();
-  
+
   std::vector<Data> data;
 };
 
-} // namespace
+}  // namespace AprilTags
 
 #endif
