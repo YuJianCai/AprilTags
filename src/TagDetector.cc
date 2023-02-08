@@ -436,13 +436,22 @@ namespace AprilTags {
     GrayModel blackModel, whiteModel;
     const int dd = 2 * thisTagFamily.blackBorder + thisTagFamily.dimension;
 
+    // Experience in x, y  dimension
+    // 0.2, 0,5 and 1.0 pixels.
+    // TODO(yujian): improve efficient
+    std::vector<float> detect_disp;
+    detect_disp.push_back(0.2);
+    // default value in source code.
+    detect_disp.push_back(0.5);
+    detect_disp.push_back(1.0);
+    for (const auto disp : detect_disp) {
     for (int iy = -1; iy <= dd; iy++) {
-      float y = (iy + 0.5f) / dd;
+      float y = (iy + disp) / dd;
       for (int ix = -1; ix <= dd; ix++) {
-	float x = (ix + 0.5f) / dd;
+	float x = (ix + disp) / dd;
 	std::pair<float,float> pxy = quad.interpolate01(x, y);
-	int irx = (int) (pxy.first + 0.5);
-	int iry = (int) (pxy.second + 0.5);
+	int irx = (int) (pxy.first + disp);
+	int iry = (int) (pxy.second + disp);
 	if (irx < 0 || irx >= width || iry < 0 || iry >= height)
 	  continue;
 	float v = fim.get(irx, iry);
@@ -456,12 +465,12 @@ namespace AprilTags {
     bool bad = false;
     unsigned long long tagCode = 0;
     for ( int iy = thisTagFamily.dimension-1; iy >= 0; iy-- ) {
-      float y = (thisTagFamily.blackBorder + iy + 0.5f) / dd;
+      float y = (thisTagFamily.blackBorder + iy + disp) / dd;
       for (int ix = 0; ix < thisTagFamily.dimension; ix++ ) {
-	float x = (thisTagFamily.blackBorder + ix + 0.5f) / dd;
+	float x = (thisTagFamily.blackBorder + ix + disp) / dd;
 	std::pair<float,float> pxy = quad.interpolate01(x, y);
-	int irx = (int) (pxy.first + 0.5);
-	int iry = (int) (pxy.second + 0.5);
+	int irx = (int) (pxy.first + disp);
+	int iry = (int) (pxy.second + disp);
 	if (irx < 0 || irx >= width || iry < 0 || iry >= height) {
 	  // cout << "*** bad:  irx=" << irx << "  iry=" << iry << endl;
 	  bad = true;
@@ -528,6 +537,7 @@ namespace AprilTags {
       }
     }
   }
+  } // end of displacement test.
 
 #ifdef DEBUG_APRIL
   {
