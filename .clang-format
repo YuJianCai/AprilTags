@@ -1,0 +1,22 @@
+---
+BasedOnStyle: Google
+IndentWidth:                            2
+---
+Language: Cpp
+AllowAllArgumentsOnNextLine:            true
+AllowAllConstructorInitializersOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine:       Empty
+AllowShortIfStatementsOnASingleLine:    false
+AllowShortLoopsOnASingleLine:           false
+AlwaysBreakTemplateDeclarations:        true
+BinPackParameters:                      false
+BinPackArguments:                       false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ColumnLimit:                            80
+IncludeBlocks:                          Preserve
+Standard:                               Cpp11
+---
+Language: JavaScript
+DisableFormat: true
+---

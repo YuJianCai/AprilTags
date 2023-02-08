@@ -60,3 +60,7 @@ todo:
 - replacing arctan2 by precomputed lookup table
 - converting matrix operations to Eigen (mostly for simplifying code,
   maybe some speedup)
+
+
+###### run demo ##############
+./demo -p image_dir

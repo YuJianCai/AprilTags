@@ -14,6 +14,11 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 find_package(Eigen3 REQUIRED)
 include_directories("/usr/include/eigen3")
 
+# boost 
+find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS filesystem thread REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 # link
 target_link_libraries(apriltags ${OpenCV_LIBS})
 
@@ -28,3 +33,10 @@ install(TARGETS apriltags
 install(EXPORT apriltagsConfig
         FILE apriltagsConfig.cmake
 	  DESTINATION lib/cmake/apriltags)
+
+
+add_executable(demo example/demo.cpp)
+target_link_libraries(demo 
+        apriltags
+        glog
+        ${Boost_LIBRARIES})
