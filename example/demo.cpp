@@ -59,6 +59,7 @@ const string intro =
 
 // April tags detector and various families that can be selected by command line
 // option
+#include "AprilTags/TagFamily.h"
 #include "AprilTags/Tag16h5.h"
 #include "AprilTags/Tag25h7.h"
 #include "AprilTags/Tag25h9.h"
