@@ -169,7 +169,7 @@ std::vector<TagDetection> TagDetector::extractTags(const cv::Mat &image) {
 #ifdef DEBUG_APRIL
   int height_ = fimSeg.getHeight();
   int width_ = fimSeg.getWidth();
-  cv::Mat image(height_, width_, CV_8UC3);
+  cv::Mat image_debug(height_, width_, CV_8UC3);
   {
     for (int y = 0; y < height_; y++) {
       for (int x = 0; x < width_; x++) {
@@ -183,7 +183,7 @@ std::vector<TagDetection> TagDetector::extractTags(const cv::Mat &image) {
         for (int k = 0; k < 3; k++) {
           v(k) = val;
         }
-        image.at<cv::Vec3b>(y, x) = v;
+        image_debug.at<cv::Vec3b>(y, x) = v;
       }
     }
   }
@@ -410,25 +410,26 @@ std::vector<TagDetection> TagDetector::extractTags(const cv::Mat &image) {
 
 #ifdef DEBUG_APRIL
   {
+    cv::Mat image_quad = image_debug.clone();
     for (unsigned int qi = 0; qi < quads.size(); qi++) {
       Quad &quad = quads[qi];
       std::pair<float, float> p1 = quad.quadPoints[0];
       std::pair<float, float> p2 = quad.quadPoints[1];
       std::pair<float, float> p3 = quad.quadPoints[2];
       std::pair<float, float> p4 = quad.quadPoints[3];
-      cv::line(image,
+      cv::line(image_quad,
                cv::Point2f(p1.first, p1.second),
                cv::Point2f(p2.first, p2.second),
                cv::Scalar(0, 0, 255, 0));
-      cv::line(image,
+      cv::line(image_quad,
                cv::Point2f(p2.first, p2.second),
                cv::Point2f(p3.first, p3.second),
                cv::Scalar(0, 0, 255, 0));
-      cv::line(image,
+      cv::line(image_quad,
                cv::Point2f(p3.first, p3.second),
                cv::Point2f(p4.first, p4.second),
                cv::Scalar(0, 0, 255, 0));
-      cv::line(image,
+      cv::line(image_quad,
                cv::Point2f(p4.first, p4.second),
                cv::Point2f(p1.first, p1.second),
                cv::Scalar(0, 0, 255, 0));
@@ -437,28 +438,28 @@ std::vector<TagDetection> TagDetector::extractTags(const cv::Mat &image) {
       p2 = quad.interpolate(-1, 1);
       p3 = quad.interpolate(1, 1);
       p4 = quad.interpolate(1, -1);
-      cv::circle(image,
+      cv::circle(image_quad,
                  cv::Point2f(p1.first, p1.second),
                  3,
                  cv::Scalar(0, 255, 0, 0),
                  1);
-      cv::circle(image,
+      cv::circle(image_quad,
                  cv::Point2f(p2.first, p2.second),
                  3,
                  cv::Scalar(0, 255, 0, 0),
                  1);
-      cv::circle(image,
+      cv::circle(image_quad,
                  cv::Point2f(p3.first, p3.second),
                  3,
                  cv::Scalar(0, 255, 0, 0),
                  1);
-      cv::circle(image,
+      cv::circle(image_quad,
                  cv::Point2f(p4.first, p4.second),
                  3,
                  cv::Scalar(0, 255, 0, 0),
                  1);
     }
-    cv::imshow("debug_april", image);
+    cv::imshow("debug_quad", image_quad);
   }
 #endif
 
@@ -526,11 +527,17 @@ std::vector<TagDetection> TagDetector::extractTags(const cv::Mat &image) {
 #ifdef DEBUG_APRIL
           {
             if (v > threshold)
-              cv::circle(
-                  image, cv::Point2f(irx, iry), 1, cv::Scalar(0, 0, 255, 0), 2);
+              cv::circle(image_debug,
+                         cv::Point2f(irx, iry),
+                         1,
+                         cv::Scalar(0, 0, 255, 0),
+                         2);
             else
-              cv::circle(
-                  image, cv::Point2f(irx, iry), 1, cv::Scalar(0, 255, 0, 0), 2);
+              cv::circle(image_debug,
+                         cv::Point2f(irx, iry),
+                         1,
+                         cv::Scalar(0, 255, 0, 0),
+                         2);
           }
 #endif
         }
@@ -586,7 +593,7 @@ std::vector<TagDetection> TagDetector::extractTags(const cv::Mat &image) {
   }  // end of displacement test.
 
 #ifdef DEBUG_APRIL
-  { cv::imshow("debug_april", image); }
+  { cv::imshow("debug_april", image_debug); }
 #endif
 
   //================================================================
