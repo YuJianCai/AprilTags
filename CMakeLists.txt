@@ -34,9 +34,41 @@ install(EXPORT apriltagsConfig
         FILE apriltagsConfig.cmake
 	  DESTINATION lib/cmake/apriltags)
 
-
 add_executable(demo example/demo.cpp)
 target_link_libraries(demo 
         apriltags
         glog
         ${Boost_LIBRARIES})
+
+# set include
+set(APRILTAGS_HEADER_FILES
+  AprilTags/Edge.h
+  AprilTags/Gridder.h
+  AprilTags/Tag16h5.h
+  AprilTags/Tag36h9.h
+  AprilTags/FloatImage.h
+  AprilTags/Homography33.h
+  AprilTags/Tag16h5_other.h
+  AprilTags/TagDetection.h
+  AprilTags/Gaussian.h
+  AprilTags/MathUtil.h
+  AprilTags/Tag25h7.h
+  AprilTags/TagDetector.h
+  AprilTags/GLine2D.h
+  AprilTags/pch.h
+  AprilTags/Tag25h9.h
+  AprilTags/TagFamily.h
+  AprilTags/GLineSegment2D.h
+  AprilTags/Quad.h
+  AprilTags/Tag36h11.h
+  AprilTags/UnionFindSimple.h
+  AprilTags/GrayModel.h
+  AprilTags/Segment.h
+  AprilTags/Tag36h11_other.h
+  AprilTags/XYWeight.h
+)
+
+install(
+  FILES ${APRILTAGS_HEADER_FILES}
+  DESTINATION include/AprilTags
+)
